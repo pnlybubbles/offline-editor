@@ -1,28 +1,6 @@
-require('./src/editor');
-
-const Vue = require('vue');
-
-const contents = new Vue({
-  el: '#editor',
-  data: {
-    items: [
-      {title: 'alkasdlkfjakljsdflkajdsf', active: true},
-      {title: 'b', active: false},
-    ],
-  },
-  methods: {
-    focus(index) {
-      this.items.forEach((item, i) => {
-        item.active = i == index ? true : false;
-      });
-    }
-  }
-});
-
-// const previewDocument = document.getElementById('preview').contentDocument;
-// const injectScript = previewDocument.createElement('script');
-// injectScript.innerHTML = 'console.log("inject")';
-// previewDocument.open();
-// previewDocument.write(dynamicHTML);
-// previewDocument.head.insertBefore(injectScript, previewDocument.head.firstElementChild);
-// previewDocument.close();
+require('./node_modules/codemirror/mode/htmlmixed/htmlmixed');
+require('./node_modules/codemirror/mode/javascript/javascript');
+require('./node_modules/codemirror/mode/xml/xml');
+require('./node_modules/codemirror/mode/clike/clike');
+require('./node_modules/codemirror/mode/css/css');
+require('./src/main');

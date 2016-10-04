@@ -4,6 +4,7 @@ border-color = #ddd
 font-color = #777
 primary-color = #88f
 sidebar-width = 140px
+editor-width = 500px
 
 html
 body
@@ -18,7 +19,6 @@ body
   align-items stretch
 
 #editor
-  flex-grow 1
   display flex
   flex-direction row
   align-items stretch
@@ -48,9 +48,10 @@ body
         text-align center
         color primary-color
   .field
-    flex-grow 1
+    box-sizing border-box
     border-left 1px solid border-color
     position relative
+    width editor-width
     .item
       position absolute
       top 0
@@ -58,19 +59,23 @@ body
       left 0
       right 0
       z-index 0
+      width 100%
       fit-to-parent()
       &.active
         z-index 1
       .codemirror-container
+        width 100%
         fit-to-parent()
         > div
+          font-family "Inconsolata", "Monaco", "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace
+          font-size 12px
+          width 100%
           height auto
 
 #preview
+  flex-grow 1
   fit-to-parent()
   .iframe
     box-sizing border-box
-    width 500px
-    min-width 500px
     border 0px
     border-left 1px solid border-color

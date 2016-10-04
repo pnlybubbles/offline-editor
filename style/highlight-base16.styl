@@ -1,0 +1,59 @@
+@import '_highlight-variables'
+
+.cm-s-base16
+  &.CodeMirror
+    background base00
+    color base05
+  div.CodeMirror-selected
+    background base01
+  .CodeMirror-line::selection
+  .CodeMirror-line > span::selection
+  .CodeMirror-line > span > span::selection
+    background rgba(45, 45, 45, 0.99)
+  .CodeMirror-gutters
+    background base01
+    border-right 0px
+  .CodeMirror-guttermarker
+    color base08
+  .CodeMirror-guttermarker-subtle
+    color base03
+  .CodeMirror-linenumber
+    color base03
+  .CodeMirror-cursor
+    border-left 1px solid base03
+
+  span
+    .cm-comment
+      color base04
+    .cm-atom
+      color base0E
+    .cm-number
+      color base0E
+    .cm-property
+    .cm-attribute
+      color base0B
+    .cm-keyword
+      color base08
+    .cm-string
+      color base0A
+    .cm-variable
+      color base05
+    .cm-variable-2
+      color base05
+    .cm-def
+      color base09
+    .cm-bracket
+      color base05
+    .cm-tag
+      color base08
+    .cm-link
+      color base0E
+    .cm-error
+      background base08
+      color base03
+
+  .CodeMirror-activeline-background
+    background base03
+  .CodeMirror-matchingbracket
+    text-decoration underline
+    color base07 !important

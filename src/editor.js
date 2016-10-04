@@ -24,6 +24,8 @@ const EditorComponent = Vue.extend({
       defaultOptions: {
         lineNumbers: true,
         matchBrackets: true,
+        theme: 'base16',
+        scrollbarStyle: null,
       },
     };
   },

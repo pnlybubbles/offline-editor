@@ -1,7 +1,7 @@
 {
   "name": "offline-editor",
   "version": "1.0.0",
-  "description": "client side standalone editor with preview dynamically.",
+  "description": "client side standalone editor with previewing dynamically.",
   "main": "__index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,10 +1,23 @@
 const CodeMirror = require('codemirror');
 const Vue = require('vue');
-const objectAssign = require('object-assign');
 
 const EditorComponent = Vue.extend({
-  template: '<div class="codemirror-container"></div>',
-  props: ['content', 'mode', 'active'],
+  template: '<div></div>',
+  props: {
+    mode: {
+      type: String,
+      default: 'xml',
+    },
+    active: {
+      type: Boolean,
+      default: false,
+    },
+    content: {
+      type: String,
+      default: '',
+      twoWay: true,
+    },
+  },
   data() {
     return {
       editor: null,
@@ -32,7 +45,11 @@ const EditorComponent = Vue.extend({
     }, {
       immediate: true,
     });
-    console.log(this.editor.getOption('mode'));
+  },
+  events: {
+    sync() {
+      this.content = this.editor.getDoc().getValue();
+    },
   },
 });
 

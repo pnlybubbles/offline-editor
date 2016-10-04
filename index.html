@@ -9,6 +9,7 @@
   <div id="app">
     <div id="editor">
       <ul class="tab">
+        <li class="item run" v-on:click="run">RUN ▶</li>
         <li
           v-for="(index, item) in items"
           class="item"
@@ -21,12 +22,17 @@
       </ul>
       <ul class="field">
         <li v-for="item in items" class="item" :class="item.active ? 'active' : ''">
-          <editor :content="item.content" :active="item.active" :mode="item.mode"></editor>
+          <editor
+            class="codemirror-container"
+            :content.sync="item.content"
+            :active="item.active"
+            :mode="item.mode"
+          ></editor>
         </li>
       </ul>
     </div>
     <div id="preview">
-      <iframe class="frame"></iframe>
+      <view class="iframe" :html="html"></view>
     </div>
   </div>
   <script type="text/javascript" src="index.js"></script>

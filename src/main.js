@@ -1,8 +1,10 @@
 require('./editor');
+require('./view');
+const htmlInjector = require('./html-injector').default;
 
 const Vue = require('vue');
 
-const contents = new Vue({
+new Vue({
   el: '#editor',
   data: {
     items: [
@@ -34,14 +36,32 @@ const contents = new Vue({
       this.items.forEach((item, i) => {
         item.active = i == index ? true : false;
       });
-    }
-  }
+    },
+    run() {
+      this.$broadcast('sync'); // EditorComponent has sync event...
+      let html = null;
+      this.items.forEach((item) => {
+        if (item.title === 'sample.html') {
+          html = item.content;
+        }
+      });
+      if (!html) {
+        console.error('Error: entry html not found.');
+        return;
+      }
+      preview.$emit('render', htmlInjector(html, this.items)); // OMG!!!
+    },
+  },
 });
 
-// const previewDocument = document.getElementById('preview').contentDocument;
-// const injectScript = previewDocument.createElement('script');
-// injectScript.innerHTML = 'console.log("inject")';
-// previewDocument.open();
-// previewDocument.write(dynamicHTML);
-// previewDocument.head.insertBefore(injectScript, previewDocument.head.firstElementChild);
-// previewDocument.close();
+const preview = new Vue({
+  el: '#preview',
+  data: {
+    html: '',
+  },
+  events: {
+    render(str) {
+      this.html = str;
+    },
+  },
+});

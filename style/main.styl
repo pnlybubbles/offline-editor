@@ -26,6 +26,7 @@ body
     .item
       background-color #fff
       cursor pointer
+      user-select none
       display block
       box-sizing border-box
       width sidebar-width
@@ -43,6 +44,9 @@ body
         background-color #eee
       &:active
         background-color #ddd
+      &.run
+        text-align center
+        color primary-color
   .field
     flex-grow 1
     border-left 1px solid border-color
@@ -64,7 +68,7 @@ body
 
 #preview
   fit-to-parent()
-  .frame
+  .iframe
     box-sizing border-box
     width 500px
     min-width 500px

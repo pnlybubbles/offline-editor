@@ -1,0 +1,25 @@
+{
+  "name": "offline-editor",
+  "version": "1.0.0",
+  "description": "client side standalone editor with preview dynamically.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server",
+    "watch": "npm-run-all --parallel css-watch js-watch",
+    "css-watch": "stylus -w -m -o index.css -u poststylus --with \"[ 'autoprefixer' ]\" < index.styl",
+    "js-watch": "watchify -v -d index.babel.js -t [ babelify ] -o 'exorcist index.js.map > index.js'"
+  },
+  "author": "pnlybubbles",
+  "license": "MIT",
+  "dependencies": {
+    "codemirror": "^5.19.0",
+    "vue": "^1.0.28"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.5.0",
+    "npm-run-all": "^3.1.0",
+    "poststylus": "^0.2.3",
+    "stylus": "^0.54.5"
+  }
+}

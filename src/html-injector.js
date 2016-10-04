@@ -1,4 +1,4 @@
-exports.default = (html, arrayOfSource) => {
+exports.default = (html, arrayOfSource, insertScript) => {
   const doc = (new DOMParser()).parseFromString(html, 'text/html');
   arrayOfSource.forEach((obj) => {
     let ejectTag = null;
@@ -23,6 +23,10 @@ exports.default = (html, arrayOfSource) => {
     const injectElm = doc.createElement(injectTag);
     injectElm.innerHTML = obj.content;
     ejectElm.parentNode.replaceChild(injectElm, ejectElm);
+  });
+  insertScript.forEach((str) => {
+    const injectElm = (new DOMParser()).parseFromString(str, 'text/html').querySelector('script');
+    doc.head.insertBefore(injectElm, doc.head.firstElementChild);
   });
   return doc.documentElement.outerHTML;
 };

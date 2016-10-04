@@ -77,5 +77,7 @@ node_modules
 
 __static/index.js
 __static/index.js.map
+__static/hook.js
+__static/hook.js.map
 __static/index.css
 __static/index.css.map

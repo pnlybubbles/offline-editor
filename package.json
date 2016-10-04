@@ -6,15 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server",
-    "watch": "npm-run-all --parallel css-watch js-watch",
+    "watch": "npm-run-all --parallel css-watch js-watch js-watch-2",
     "css-watch": "stylus -w -m -o __static/index.css -u poststylus --with \"[ 'autoprefixer' ]\" < index.styl",
     "js-watch": "watchify -v -d index.babel.js -t [ babelify ] -o 'exorcist __static/index.js.map > __static/index.js'",
-    "clean": "del __static/index.js __static/index.js.map __static/index.css __static/index.css.map"
+    "js-watch-2": "watchify -v -d hook.babel.js -t [ babelify ] -o 'exorcist __static/hook.js.map > __static/hook.js'",
+    "clean": "del __static/index.js __static/index.js.map __static/hook.js __static/hook.js.map __static/index.css __static/index.css.map"
   },
   "author": "pnlybubbles",
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.19.0",
+    "object-assign": "^4.1.0",
     "vue": "^1.0.28"
   },
   "devDependencies": {

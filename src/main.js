@@ -16,8 +16,10 @@ new Vue({
 <head>
   <title></title>
   <script type="text/javascript" src="sample.js"></script>
+  <link rel="stylesheet" type="text/css" href="sample.css">
 </head>
 <body>
+  Hi, Chieri!
 </body>
 </html>
 `,
@@ -26,6 +28,15 @@ new Vue({
         title: 'sample.js',
         mode: 'javascript',
         content: `console.log(\'Hi, Chieri.\');
+`,
+        active: false,
+      },
+      {
+        title: 'sample.css',
+        mode: 'css',
+        content: `body {
+  background-color: #fdf;
+}
 `,
         active: false,
       },

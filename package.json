@@ -2,13 +2,14 @@
   "name": "offline-editor",
   "version": "1.0.0",
   "description": "client side standalone editor with preview dynamically.",
-  "main": "index.js",
+  "main": "__index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server",
     "watch": "npm-run-all --parallel css-watch js-watch",
-    "css-watch": "stylus -w -m -o index.css -u poststylus --with \"[ 'autoprefixer' ]\" < index.styl",
-    "js-watch": "watchify -v -d index.babel.js -t [ babelify ] -o 'exorcist index.js.map > index.js'"
+    "css-watch": "stylus -w -m -o __static/index.css -u poststylus --with \"[ 'autoprefixer' ]\" < index.styl",
+    "js-watch": "watchify -v -d index.babel.js -t [ babelify ] -o 'exorcist __static/index.js.map > __static/index.js'",
+    "clean": "del __static/index.js __static/index.js.map __static/index.css __static/index.css.map"
   },
   "author": "pnlybubbles",
   "license": "MIT",
@@ -20,6 +21,7 @@
     "autoprefixer": "^6.5.0",
     "babel-preset-es2016": "^6.16.0",
     "babelify": "^7.3.0",
+    "del-cli": "^0.2.0",
     "exorcist": "^0.4.0",
     "http-server": "^0.9.0",
     "npm-run-all": "^3.1.0",

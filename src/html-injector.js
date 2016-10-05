@@ -1,4 +1,4 @@
-exports.default = (html, arrayOfSource, insertScript) => {
+module.exports = (html, arrayOfSource, insertScript) => {
   const doc = (new DOMParser()).parseFromString(html, 'text/html');
   arrayOfSource.forEach((obj) => {
     let ejectTag = null;

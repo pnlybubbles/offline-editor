@@ -52,6 +52,9 @@ const EditorComponent = Vue.extend({
     sync() {
       this.content = this.editor.getDoc().getValue();
     },
+    apply() {
+      this.editor.getDoc().setValue(this.content);
+    },
   },
 });
 

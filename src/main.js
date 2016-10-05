@@ -1,7 +1,7 @@
 require('./editor');
 require('./view');
 const objectAssign = require('object-assign');
-const htmlInjector = require('./html-injector').default;
+const htmlInjector = require('./html-injector');
 
 const Vue = require('vue');
 
@@ -12,48 +12,56 @@ new Vue({
       {
         title: 'sample.html',
         mode: 'htmlmixed',
-        content: `<!DOCTYPE html>
-<html>
-<head>
-  <title></title>
-  <script type="text/javascript" src="sample.js"></script>
-  <link rel="stylesheet" type="text/css" href="sample.css">
-</head>
-<body>
-  <h3>Hi, Chieri!</h3>
-  <pre id="external"></pre>
-</body>
-</html>
-`,
+        content: '',
+        contentUrl: '__dynamic/index.html',
         active: true,
       }, {
         title: 'sample.js',
         mode: 'javascript',
-        content: `console.log(\'Hi, Chieri.\');
-var xhr = new XMLHttpRequest();
-xhr.open('GET', 'external.txt');
-xhr.onreadystatechange = function() {
-  document.getElementById('external').innerHTML = xhr.responseText;
-};
-xhr.send();
-`,
+        content: '',
+        contentUrl: '__dynamic/index.js',
         active: false,
       }, {
         title: 'sample.css',
         mode: 'css',
-        content: `body {
-  background-color: #fdf;
-}
-`,
+        content: '',
+        contentUrl: '__dynamic/index.css',
         active: false,
       }, {
         title: 'external.txt',
         mode: '',
-        content: `Chieri is so cute!
-`,
+        content: '',
+        contentUrl: '__dynamic/external.txt',
         active: false,
       },
     ],
+  },
+  ready() {
+    Promise.all(this.items.map((item) => {
+      return new Promise((resolve, reject) => {
+        if (item.contentUrl) {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', item.contentUrl);
+          xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+              item.content = xhr.responseText;
+              resolve();
+            } else {
+              reject(xhr.statusText);
+            }
+          });
+          xhr.addEventListener('timeout', reject);
+          xhr.timeout = 2000;
+          xhr.send();
+        } else {
+          resolve();
+        }
+      });
+    })).then(() => {
+      this.$broadcast('apply'); // EditorComponent has apply event to set content...
+    }).catch((e) => {
+      console.error(e);
+    });
   },
   methods: {
     focus(index) {
@@ -62,7 +70,7 @@ xhr.send();
       });
     },
     run() {
-      this.$broadcast('sync'); // EditorComponent has sync event...
+      this.$broadcast('sync'); // EditorComponent has sync event to bind content...
       preview.$emit('render', this.items); // OMG!!!
     },
   },

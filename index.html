@@ -2,39 +2,44 @@
 <html>
 <head>
   <title></title>
-  <link rel="stylesheet" type="text/css" href="__static/codemirror.css">
-  <link rel="stylesheet" type="text/css" href="__static/index.css">
+  <style type="text/css">
+    #editor {
+      width: 1100px;
+      height: 600px;
+      border: 4px solid #ddd;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <div id="editor">
-      <ul class="tab">
-        <li class="item run" v-on:click="run">RUN ▶</li>
-        <li
-          v-for="(index, item) in items"
-          class="item"
-          :class="item.active ? 'active' : ''"
-          :title="item.title"
-          v-on:click="focus(index)"
-        >
-          {{ item.title }}
-        </li>
-      </ul>
-      <ul class="field">
-        <li v-for="item in items" class="item" :class="item.active ? 'active' : ''">
-          <editor
-            class="codemirror-container"
-            :content.sync="item.content"
-            :active="item.active"
-            :mode="item.mode"
-          ></editor>
-        </li>
-      </ul>
-    </div>
-    <div id="preview">
-      <view class="iframe" :html="html"></view>
-    </div>
-  </div>
-  <script type="text/javascript" src="__static/index.js"></script>
+  <iframe id="editor" src="__index.html"></iframe>
+  <script type="text/javascript">
+    var items = [
+      {
+        title: 'sample.html',
+        mode: 'htmlmixed',
+        content: '',
+        contentUrl: '__dynamic/index.html',
+      }, {
+        title: 'sample.js',
+        mode: 'javascript',
+        content: '',
+        contentUrl: '__dynamic/index.js',
+      }, {
+        title: 'sample.css',
+        mode: 'css',
+        content: '',
+        contentUrl: '__dynamic/index.css',
+      }, {
+        title: 'external.txt',
+        mode: '',
+        content: '',
+        contentUrl: '__dynamic/external.txt',
+      },
+    ];
+    var editor = document.getElementById('editor');
+    editor.addEventListener('load', function() {
+      editor.contentWindow.load(items);
+    });
+  </script>
 </body>
 </html>

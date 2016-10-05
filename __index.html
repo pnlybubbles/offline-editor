@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="__static/codemirror.css">
+  <link rel="stylesheet" type="text/css" href="__static/index.css">
+</head>
+<body>
+  <div id="app">
+    <div id="editor">
+      <ul class="tab">
+        <li class="item run" v-on:click="run">RUN ▶</li>
+        <li
+          v-for="(index, item) in items"
+          class="item"
+          :class="item.active ? 'active' : ''"
+          :title="item.title"
+          v-on:click="focus(index)"
+        >
+          {{ item.title }}
+        </li>
+      </ul>
+      <ul class="field">
+        <li v-for="item in items" class="item" :class="item.active ? 'active' : ''">
+          <editor
+            class="codemirror-container"
+            :content.sync="item.content"
+            :active="item.active"
+            :mode="item.mode"
+          ></editor>
+        </li>
+      </ul>
+    </div>
+    <div id="preview">
+      <view class="iframe" :html="html"></view>
+    </div>
+  </div>
+  <script type="text/javascript" src="__static/index.js"></script>
+</body>
+</html>

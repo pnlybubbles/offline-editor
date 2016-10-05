@@ -3,4 +3,4 @@ require('./node_modules/codemirror/mode/javascript/javascript');
 require('./node_modules/codemirror/mode/xml/xml');
 require('./node_modules/codemirror/mode/clike/clike');
 require('./node_modules/codemirror/mode/css/css');
-require('./src/main');
+window.load = require('./src/main');

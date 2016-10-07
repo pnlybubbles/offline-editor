@@ -8,6 +8,11 @@ const Overlay = require('./overlay');
 module.exports = (importedItems) => {
   importedItems = importedItems || [];
 
+  importedItems.forEach((item, i) => {
+    item.active = i === 0 ? true : false;
+    item.tooltipVisible = false;
+  });
+
   const preview = Preview();
   const overlay = Overlay();
 
@@ -16,13 +21,7 @@ module.exports = (importedItems) => {
     data: {
       items: importedItems,
     },
-    beforeCompile() {
-      this.items.forEach((item, i) => {
-        item.active = i === 0 ? true : false;
-        item.tooltipVisible = false;
-      });
-    },
-    activate() {
+    ready() {
       Promise.all(this.items.map((item) => {
         return new Promise((resolve, reject) => {
           if (item.contentUrl) {
@@ -52,7 +51,12 @@ module.exports = (importedItems) => {
     methods: {
       focus(index) {
         this.items.forEach((item, i) => {
-          item.active = i == index ? true : false;
+          if (i === index && item.active) {
+            clearTimeout(item.tooltipShowTimer);
+            item.tooltipVisible = true;
+          } else {
+            item.active = i == index ? true : false;
+          }
         });
       },
       onMouseover(index) {
@@ -60,7 +64,7 @@ module.exports = (importedItems) => {
         if (!item.tooltipVisible) {
           item.tooltipShowTimer = setTimeout(() => {
             item.tooltipVisible = true;
-          }, 500);
+          }, 1000);
         }
         clearTimeout(item.tooltipHideTimer);
       },

@@ -10,9 +10,12 @@ class Overlay {
   open(config) {
     return new Promise((resolve, reject) => {
       this.vm.label = config.label;
-      objectAssign(this.vm.buttons.left, config.buttons.left);
-      objectAssign(this.vm.buttons.right, config.buttons.right);
+      this.vm.title = config.title;
+      objectAssign(this.vm.buttons, config.buttons);
       this.vm.show();
+      process.nextTick(() => {
+        this.vm.$els.title.focus();
+      });
       this.vm.$once('close', (res) => {
         if (res != null) {
           resolve(res ? (this.vm.title === '' ? 'notitle' : this.vm.title) : null);
@@ -32,6 +35,7 @@ module.exports = () => {
   const vm = new Vue({
     el: '#overlay',
     data: {
+      visible: false,
       label: 'Label',
       title: '',
       buttons: {
@@ -44,23 +48,20 @@ module.exports = () => {
           class: 'main',
         },
       },
+      titleEl: null,
     },
     computed: {
       filetype() {
         const stat = modeDetector(this.title);
-        return stat.mode ? stat.ext : 'unkown';
+        return stat.mode ? stat.modeDisplay : 'Unknown';
       },
-    },
-    ready() {
-      this.hide();
     },
     methods: {
       show() {
-        this.$el.style.display = 'block';
-        this.$el.querySelector('.title').focus();
+        this.visible = true;
       },
       hide(res) {
-        this.$el.style.display = 'none';
+        this.visible = false;
         this.$emit('close', res);
       },
     },

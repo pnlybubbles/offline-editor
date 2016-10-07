@@ -1,0 +1,68 @@
+tooltip-item-width = 70px
+
+.__tooltip
+  background-color rgba(0, 0, 0, 0.8)
+  border-radius 0 4px 4px 0
+  display flex
+
+.__tooltip-item
+  box-sizing border-box
+  padding 7px 0
+  width tooltip-item-width
+  text-align center
+  font-size 11px
+  color rgba(255, 255, 255, 0.8)
+  cursor pointer
+  user-select none
+  border-left-color rgba(255, 255, 255, 0.2)
+  border-left-style solid
+  &:first-child
+    border-left-color none
+    border-left-style none
+  &:hover
+    transition 0.1s background-color ease
+    background-color rgba(255, 255, 255, 0.2)
+  &:active
+    transition 0.1s opacity ease
+    opacity 0.7
+
+.tooltip-transition
+  width tooltip-item-width
+  border-left-width 1px
+  color rgba(255, 255, 255, 0.8)
+  &:first-child
+    border-left-width none
+
+@keyframes expand
+  0%
+    width 0px
+    color rgba(255, 255, 255, 0.0)
+    border-left-width 0px
+  70%
+    width tooltip-item-width
+    color rgba(255, 255, 255, 0.0)
+    border-left-width 0px
+  100%
+    width tooltip-item-width
+    color rgba(255, 255, 255, 0.8)
+    border-left-width 1px
+
+@keyframes collapse
+  0%
+    width tooltip-item-width
+    color rgba(255, 255, 255, 0.8)
+    border-left-width 1px
+  30%
+    width tooltip-item-width
+    color rgba(255, 255, 255, 0.0)
+    border-left-width 0px
+  100%
+    width 0px
+    color rgba(255, 255, 255, 0.0)
+    border-left-width 0px
+
+.tooltip-enter
+  animation expand 0.3s
+
+.tooltip-leave
+  animation collapse 0.3s

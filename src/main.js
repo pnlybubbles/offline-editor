@@ -1,14 +1,12 @@
 require('./editor');
 require('./view');
+require('./tooltip');
 const Vue = require('vue');
 const Preview = require('./preview');
 const Overlay = require('./overlay');
 
 module.exports = (importedItems) => {
   importedItems = importedItems || [];
-  importedItems.forEach((item, i) => {
-    item.active = i === 0 ? true : false;
-  });
 
   const preview = Preview();
   const overlay = Overlay();
@@ -18,7 +16,13 @@ module.exports = (importedItems) => {
     data: {
       items: importedItems,
     },
-    ready() {
+    beforeCompile() {
+      this.items.forEach((item, i) => {
+        item.active = i === 0 ? true : false;
+        item.tooltipVisible = false;
+      });
+    },
+    activate() {
       Promise.all(this.items.map((item) => {
         return new Promise((resolve, reject) => {
           if (item.contentUrl) {
@@ -51,9 +55,28 @@ module.exports = (importedItems) => {
           item.active = i == index ? true : false;
         });
       },
+      onMouseover(index) {
+        const item = this.items[index];
+        if (!item.tooltipVisible) {
+          item.tooltipShowTimer = setTimeout(() => {
+            item.tooltipVisible = true;
+          }, 500);
+        }
+        clearTimeout(item.tooltipHideTimer);
+      },
+      onMouseout(index) {
+        const item = this.items[index];
+        if (item.tooltipVisible) {
+          item.tooltipHideTimer = setTimeout(() => {
+            item.tooltipVisible = false;
+          }, 200);
+        }
+        clearTimeout(item.tooltipShowTimer);
+      },
       add() {
         overlay.open({
           label: 'Add file',
+          title: '',
           buttons: {
             left: {
               label: 'Cancel',
@@ -70,7 +93,51 @@ module.exports = (importedItems) => {
               title: title,
               mode: '',
               content: '',
+              active: true,
+              tooltipVisible: false,
             });
+          }
+        });
+      },
+      rename(index) {
+        const item = this.items[index];
+        overlay.open({
+          label: 'Rename file',
+          title: item.title,
+          buttons: {
+            left: {
+              label: 'Cancel',
+              class: 'sub',
+            },
+            right: {
+              label: 'Rename',
+              class: 'main',
+            },
+          },
+        }).then((title) => {
+          if (title) {
+            item.title = title;
+          }
+        });
+      },
+      del(index) {
+        const item = this.items[index];
+        overlay.open({
+          label: 'Delete file',
+          title: item.title,
+          buttons: {
+            left: {
+              label: 'Cancel',
+              class: 'main',
+            },
+            right: {
+              label: 'Delete',
+              class: 'sub',
+            },
+          },
+        }).then((title) => {
+          if (title) {
+            item.splice(index, 1);
           }
         });
       },

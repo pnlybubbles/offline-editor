@@ -9,17 +9,23 @@
   <div id="app">
     <div id="editor">
       <ul class="tab">
-        <li class="item run" @click="run">RUN ▶</li>
+        <li class="item run" @click="run"><span>RUN ▶</span></li>
         <li
           v-for="(index, item) in items"
           class="item"
           :class="item.active ? 'active' : ''"
           :title="item.title"
           @click="focus(index)"
+          @mouseover="onMouseover(index)"
+          @mouseout="onMouseout(index)"
         >
-          {{ item.title }}
+          <span>{{ item.title }}</span>
+          <tooltip class="tooltip">
+            <tooltip-item v-show="item.tooltipVisible" transition="tooltip" @click.stop="rename(index)">Rename</tooltip-item>
+            <tooltip-item v-show="item.tooltipVisible" transition="tooltip" @click.stop="del(index)">Delete</tooltip-item>
+          </tooltip>
         </li>
-        <li class="item add" @click="add">＋</li>
+        <li class="item add" @click="add"><span>＋</span></li>
       </ul>
       <ul class="field">
         <li v-for="item in items" class="item" :class="item.active ? 'active' : ''">
@@ -36,14 +42,14 @@
       <view class="iframe" :html="html"></view>
     </div>
     <div id="overlay">
-      <div class="wrap">
-        <div class="plate">
+      <div class="shade" v-show="visible" transition="fade">
+        <div class="plate" v-show="visible" transition="popup">
           <div class="label">{{ label }}</div>
-          <input class="title" type="text" v-model="title" @keydown.enter="hide(true)"></input>
+          <input class="title" type="text" v-model="title" v-el:title @keydown.enter="hide(true)"></input>
           <div class="message filetype">File type: <span class='bold'>{{ filetype }}</span></div>
           <div class="horizontal">
-            <div class="button" :class="[buttons.left.class]" @click="hide(false)">Cancel</div>
-            <div class="button" :class="[buttons.right.class]" @click="hide(true)">OK</div>
+            <div class="button" :class="[buttons.left.class]" @click="hide(false)">{{ buttons.left.label }}</div>
+            <div class="button" :class="[buttons.right.class]" @click="hide(true)">{{ buttons.right.label }}</div>
           </div>
         </div>
       </div>

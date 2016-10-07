@@ -17,7 +17,7 @@ class Overlay {
         this.vm.$els.title.focus();
       });
       this.vm.$once('close', (res) => {
-        if (res != null) {
+        if (typeof res !== 'undefined' && res !== null) {
           resolve(res ? (this.vm.title === '' ? 'notitle' : this.vm.title) : null);
         } else {
           reject();

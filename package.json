@@ -6,11 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "http-server",
+    "lint": "eslint *.babel.js src/*",
     "watch": "npm-run-all --parallel css-watch js-watch js-watch-2",
-    "css-watch": "stylus -w -m -o __static/index.css -u poststylus --with \"[ 'autoprefixer' ]\" < index.styl",
+    "build": "npm-run-all --parallel css-build js-build js-build-2",
+    "css-watch": "stylus index.styl -w --include-css -r -m -u poststylus --with \"[ 'autoprefixer' ]\" -m --sourcemap-base . -o __static/index.css",
+    "css-build": "stylus index.styl --include-css -r -m -u poststylus --with \"[ 'autoprefixer' ]\" -m --sourcemap-base . -o __static/index.css",
+    "postcss-build": "csswring --sourcemap __static/index.css __static/index.min.css",
     "js-watch": "watchify -v -d index.babel.js -t [ babelify ] -o 'exorcist __static/index.js.map > __static/index.js'",
     "js-watch-2": "watchify -v -d hook.babel.js -t [ babelify ] -o 'exorcist __static/hook.js.map > __static/hook.js'",
-    "clean": "del __static/index.js __static/index.js.map __static/hook.js __static/hook.js.map __static/index.css __static/index.css.map"
+    "js-build": "browserify -v -d index.babel.js -t [ babelify ] | exorcist __static/index.js.map -b . > __static/index.js",
+    "postjs-build": "uglifyjs __static/index.js --in-source-map __static/index.js.map -m -c -o __static/index.min.js --source-map __static/index.min.js.map",
+    "js-build-2": "browserify -v -d hook.babel.js -t [ babelify ] | exorcist __static/hook.js.map -b . > __static/hook.js",
+    "postjs-build-2": "uglifyjs __static/hook.js --in-source-map __static/hook.js.map -m -c -o __static/hook.min.js --source-map __static/hook.min.js.map",
+    "clean": "del __static/index.js __static/index.js.map __static/index.min.js __static/index.min.js.map __static/hook.js __static/hook.js.map __static/hook.min.js __static/hook.min.js.map __static/index.css __static/index.css.map __static/index.min.css __static/index.min.css.map"
   },
   "author": "pnlybubbles",
   "license": "MIT",
@@ -21,14 +29,18 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
+    "babel-preset-es2015": "^6.16.0",
     "babel-preset-es2016": "^6.16.0",
     "babelify": "^7.3.0",
+    "csswring": "^5.1.0",
     "del-cli": "^0.2.0",
+    "eslint": "^3.7.1",
     "exorcist": "^0.4.0",
     "http-server": "^0.9.0",
     "npm-run-all": "^3.1.0",
     "poststylus": "^0.2.3",
     "stylus": "^0.54.5",
+    "uglify-js": "^2.7.3",
     "watchify": "^3.7.0"
   }
 }

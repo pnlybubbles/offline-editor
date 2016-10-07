@@ -77,7 +77,13 @@ node_modules
 
 __static/index.js
 __static/index.js.map
+__static/index.min.js
+__static/index.min.js.map
 __static/hook.js
 __static/hook.js.map
+__static/hook.min.js
+__static/hook.min.js.map
 __static/index.css
 __static/index.css.map
+__static/index.min.css
+__static/index.min.css.map

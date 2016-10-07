@@ -55,7 +55,7 @@ module.exports = (importedItems) => {
             clearTimeout(item.tooltipShowTimer);
             item.tooltipVisible = true;
           } else {
-            item.active = i == index ? true : false;
+            item.active = i === index ? true : false;
           }
         });
       },

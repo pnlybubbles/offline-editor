@@ -25,7 +25,7 @@ module.exports = () => {
         });
         const hookItems = [
           `<script>window.__HOOK_OBJECTS = ${JSON.stringify(escapedItem)}; window.__HOOK_OBJECTS.forEach(function(v) { v.content = unescape(v.content); });</script>`, // OMG!!!!!
-          '<script type="text/javascript" src="__static/hook.js"></script>',
+          '<script type="text/javascript" src="__static/hook.min.js"></script>',
         ];
         this.html = htmlInjector(html, items, hookItems);
       },

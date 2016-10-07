@@ -1,13 +1,17 @@
 require('./editor');
 require('./view');
-const objectAssign = require('object-assign');
-const htmlInjector = require('./html-injector');
 const Vue = require('vue');
+const Preview = require('./preview');
+const Overlay = require('./overlay');
 
 module.exports = (importedItems) => {
+  importedItems = importedItems || [];
   importedItems.forEach((item, i) => {
     item.active = i === 0 ? true : false;
   });
+
+  const preview = Preview();
+  const overlay = Overlay();
 
   new Vue({
     el: '#editor',
@@ -47,38 +51,32 @@ module.exports = (importedItems) => {
           item.active = i == index ? true : false;
         });
       },
+      add() {
+        overlay.open({
+          label: 'Add file',
+          buttons: {
+            left: {
+              label: 'Cancel',
+              class: 'sub',
+            },
+            right: {
+              label: 'OK',
+              class: 'main',
+            },
+          },
+        }).then((title) => {
+          if (title) {
+            this.items.push({
+              title: title,
+              mode: '',
+              content: '',
+            });
+          }
+        });
+      },
       run() {
         this.$broadcast('sync'); // EditorComponent has sync event to bind content...
         preview.$emit('render', this.items); // OMG!!!
-      },
-    },
-  });
-
-  const preview = new Vue({
-    el: '#preview',
-    data: {
-      html: '',
-    },
-    events: {
-      render(items) {
-        let html = null;
-        items.forEach((item) => {
-          if (item.title === 'sample.html') {
-            html = item.content;
-          }
-        });
-        if (!html) {
-          console.error('Error: entry html not found.');
-          return;
-        }
-        const escapedItem = items.map((v) => {
-          return objectAssign({}, v, {content: escape(v.content)});
-        });
-        const hookItems = [
-          `<script>window.__HOOK_OBJECTS = ${JSON.stringify(escapedItem)}; window.__HOOK_OBJECTS.forEach(function(v) { v.content = unescape(v.content); });</script>`, // OMG!!!!!
-          '<script type="text/javascript" src="__static/hook.js"></script>',
-        ];
-        this.html = htmlInjector(html, items, hookItems);
       },
     },
   });

@@ -1,22 +1,29 @@
 const Vue = require('vue');
 
 const ViewComponent = Vue.extend({
-  template: '<iframe></iframe>',
+  template: '<div></div>',
+  data() {
+    return {
+      child: null,
+    };
+  },
   props: {
     html: {
       type: String,
       default: '',
     },
   },
-  ready() {
-    const doc = this.$el.contentDocument;
-    this.$watch('html', (str) => {
+  methods: {
+    reload() {
+      if (this.child) {
+        this.$el.removeChild(this.child);
+      }
+      this.child = this.$el.appendChild(document.createElement('iframe'));
+      const doc = this.child.contentDocument;
       doc.open();
-      doc.write(str);
+      doc.write(this.html);
       doc.close();
-    }, {
-      immediate: true,
-    });
+    },
   },
 });
 

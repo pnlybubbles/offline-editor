@@ -28,6 +28,9 @@ module.exports = () => {
           '<script type="text/javascript" src="__static/hook.min.js"></script>',
         ];
         this.html = htmlInjector(html, items, hookItems);
+        process.nextTick(() => {
+          this.$refs.view.reload(); // OMG!!!
+        });
       },
     },
   });

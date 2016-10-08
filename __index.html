@@ -47,7 +47,7 @@
       </ul>
     </div>
     <div id="preview">
-      <view class="iframe" :html="html"></view>
+      <view class="iframe" :html="html" v-ref:view></view>
     </div>
     <div id="overlay">
       <div class="shade" v-show="visible" transition="fade">

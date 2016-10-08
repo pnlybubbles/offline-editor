@@ -9,16 +9,18 @@ class Overlay {
 
   open(config) {
     return new Promise((resolve, reject) => {
-      this.vm.label = config.label;
-      this.vm.title = config.title;
-      objectAssign(this.vm.buttons, config.buttons);
+      objectAssign(this.vm.config, config);
       this.vm.show();
       process.nextTick(() => {
         this.vm.$els.title.focus();
       });
       this.vm.$once('close', (res) => {
         if (typeof res !== 'undefined' && res !== null) {
-          resolve(res ? (this.vm.title === '' ? 'notitle' : this.vm.title) : null);
+          resolve({
+            result: res,
+            title: this.vm.config.title === '' ? 'notitle' : this.vm.config.title,
+            mode: this.vm.filestat.mode,
+          });
         } else {
           reject();
         }
@@ -36,24 +38,29 @@ module.exports = () => {
     el: '#overlay',
     data: {
       visible: false,
-      label: 'Label',
-      title: '',
-      buttons: {
-        left: {
-          label: 'Cancel',
-          class: 'sub',
-        },
-        right: {
-          label: 'OK',
-          class: 'main',
+      config: {
+        label: 'Label',
+        title: '',
+        type: 'prompt',
+        buttons: {
+          left: {
+            label: 'Cancel',
+            class: 'sub',
+          },
+          right: {
+            label: 'OK',
+            class: 'main',
+          },
         },
       },
       titleEl: null,
     },
     computed: {
+      filestat() {
+        return modeDetector(this.config.title);
+      },
       filetype() {
-        const stat = modeDetector(this.title);
-        return stat.mode ? stat.modeDisplay : 'Unknown';
+        return this.filestat.mode ? this.filestat.modeDisplay : 'Unknown';
       },
     },
     methods: {

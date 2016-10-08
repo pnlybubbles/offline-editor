@@ -81,6 +81,7 @@ module.exports = (importedItems) => {
         overlay.open({
           label: 'Add file',
           title: '',
+          type: 'prompt',
           buttons: {
             left: {
               label: 'Cancel',
@@ -91,15 +92,36 @@ module.exports = (importedItems) => {
               class: 'main',
             },
           },
-        }).then((title) => {
-          if (title) {
-            this.items.push({
-              title: title,
-              mode: '',
-              content: '',
-              active: true,
-              tooltipVisible: false,
-            });
+        }).then((ret) => {
+          if (ret.result) {
+            if (this.items.map((item) => {
+              return item.title;
+            }).indexOf(ret.title) === -1) {
+              this.items.push({
+                title: ret.title,
+                mode: ret.mode,
+                content: '',
+                active: false,
+                tooltipVisible: false,
+              });
+              this.focus(this.items.length - 1);
+            } else {
+              overlay.open({
+                label: 'Filename duplicated!',
+                title: '',
+                type: 'confirm',
+                buttons: {
+                  left: {
+                    label: 'Cancel',
+                    class: 'main',
+                  },
+                  right: {
+                    label: 'OK',
+                    class: 'main',
+                  },
+                },
+              });
+            }
           }
         });
       },
@@ -108,6 +130,7 @@ module.exports = (importedItems) => {
         overlay.open({
           label: 'Rename file',
           title: item.title,
+          type: 'prompt',
           buttons: {
             left: {
               label: 'Cancel',
@@ -118,9 +141,10 @@ module.exports = (importedItems) => {
               class: 'main',
             },
           },
-        }).then((title) => {
-          if (title) {
-            item.title = title;
+        }).then((ret) => {
+          if (ret.result) {
+            item.mode = ret.mode;
+            item.title = ret.title;
           }
         });
       },
@@ -128,7 +152,8 @@ module.exports = (importedItems) => {
         const item = this.items[index];
         overlay.open({
           label: 'Delete file',
-          title: item.title,
+          title: '',
+          type: 'confirm',
           buttons: {
             left: {
               label: 'Cancel',
@@ -139,9 +164,9 @@ module.exports = (importedItems) => {
               class: 'sub',
             },
           },
-        }).then((title) => {
-          if (title) {
-            item.splice(index, 1);
+        }).then((ret) => {
+          if (ret.result) {
+            this.items.splice(index, 1);
           }
         });
       },

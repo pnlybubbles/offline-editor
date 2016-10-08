@@ -43,12 +43,14 @@
     <div id="overlay">
       <div class="shade" v-show="visible" transition="fade">
         <div class="plate" v-show="visible" transition="popup">
-          <div class="label">{{ label }}</div>
-          <input class="title" type="text" v-model="title" v-el:title @keydown.enter="hide(true)"></input>
-          <div class="message filetype">File type: <span class='bold'>{{ filetype }}</span></div>
+          <div class="label">{{ config.label }}</div>
+          <div v-show="config.type === 'prompt'">
+            <input class="title" type="text" v-model="config.title" v-el:title @keydown.enter="hide(true)"></input>
+            <div class="message filetype">File type: <span class='bold'>{{ filetype }}</span></div>
+          </div>
           <div class="horizontal">
-            <div class="button" :class="[buttons.left.class]" @click="hide(false)">{{ buttons.left.label }}</div>
-            <div class="button" :class="[buttons.right.class]" @click="hide(true)">{{ buttons.right.label }}</div>
+            <div class="button" :class="[config.buttons.left.class]" @click="hide(false)">{{ config.buttons.left.label }}</div>
+            <div class="button" :class="[config.buttons.right.class]" @click="hide(true)">{{ config.buttons.right.label }}</div>
           </div>
         </div>
       </div>

@@ -10,15 +10,17 @@ class Overlay {
   open(config) {
     return new Promise((resolve, reject) => {
       objectAssign(this.vm.config, config);
+      this.vm.error = null;
       this.vm.show();
       process.nextTick(() => {
         this.vm.$els.title.focus();
       });
       this.vm.$once('close', (res) => {
+        if (this.unwatch) { this.unwatch(); }
         if (typeof res !== 'undefined' && res !== null) {
           resolve({
             result: res,
-            title: this.vm.config.title === '' ? 'notitle' : this.vm.config.title,
+            filename: this.vm.filename,
             mode: this.vm.filestat.mode,
           });
         } else {
@@ -26,6 +28,12 @@ class Overlay {
         }
       });
     });
+  }
+
+  errorHandler(cb) {
+    this.unwatch = this.vm.$watch('filename', (filename) => {
+      this.vm.error = cb(filename);
+    }, {immediate: true});
   }
 
   close() {
@@ -54,6 +62,7 @@ module.exports = () => {
         },
       },
       titleEl: null,
+      error: null,
     },
     computed: {
       filestat() {
@@ -61,6 +70,9 @@ module.exports = () => {
       },
       filetype() {
         return this.filestat.mode ? this.filestat.modeDisplay : 'Unknown';
+      },
+      filename() {
+        return this.config.title === '' ? 'notitle' : this.config.title;
       },
     },
     methods: {

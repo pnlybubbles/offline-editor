@@ -35,7 +35,7 @@ body
       border-bottom 1px solid border-color
       padding 11px 12px
       cursor pointer
-      span
+      .label
         // font-weight bold
         color font-color
         font-size 12px
@@ -51,8 +51,8 @@ body
         background-color hover-color
       &:active
         background-color active-color
-      &.run span
-      &.add span
+      &.run .label
+      &.add .label
         width auto
         text-align center
         color primary-color
@@ -125,8 +125,10 @@ body
   .message
     font-size 11px
     color font-color
-    margin-bottom 12px
+    margin 3px 0
     padding-left 5px
+    &.error
+      color #f88
   .bold
     font-weight bold
   .title
@@ -146,6 +148,7 @@ body
   .horizontal
     display flex
     justify-content space-between
+    margin-top 13px
   .button
     color font-color
     text-align center
@@ -157,11 +160,15 @@ body
     border 1px solid border-color
     user-select none
     cursor pointer
+    background-color bg-color
     &.main
       &:hover
         border-color primary-color
       &:active
         background-color hover-color
+      &.disabled
+        border-color border-color
+        background-color bg-color
     &.sub
       border 1px solid #f88
       &:hover
@@ -169,3 +176,10 @@ body
         background-color #f88
       &:active
         background-color darken(#f88, 5)
+      &.disabled
+        color font-color
+        background-color bg-color
+    &.disabled
+      cursor not-allowed
+      opacity 0.4
+

@@ -94,34 +94,23 @@ module.exports = (importedItems) => {
           },
         }).then((ret) => {
           if (ret.result) {
-            if (this.items.map((item) => {
-              return item.title;
-            }).indexOf(ret.title) === -1) {
-              this.items.push({
-                title: ret.title,
-                mode: ret.mode,
-                content: '',
-                active: false,
-                tooltipVisible: false,
-              });
-              this.focus(this.items.length - 1);
-            } else {
-              overlay.open({
-                label: 'Filename duplicated!',
-                title: '',
-                type: 'confirm',
-                buttons: {
-                  left: {
-                    label: 'Cancel',
-                    class: 'main',
-                  },
-                  right: {
-                    label: 'OK',
-                    class: 'main',
-                  },
-                },
-              });
-            }
+            this.items.push({
+              title: ret.filename,
+              mode: ret.mode,
+              content: '',
+              active: false,
+              tooltipVisible: false,
+            });
+            this.focus(this.items.length - 1);
+          }
+        });
+        overlay.errorHandler((filename) => {
+          if (this.items.map((item) => {
+            return item.title;
+          }).indexOf(filename) === -1) {
+            return null;
+          } else {
+            return 'Filename duplicated !';
           }
         });
       },
@@ -144,12 +133,11 @@ module.exports = (importedItems) => {
         }).then((ret) => {
           if (ret.result) {
             item.mode = ret.mode;
-            item.title = ret.title;
+            item.title = ret.filename;
           }
         });
       },
       del(index) {
-        const item = this.items[index];
         overlay.open({
           label: 'Delete file',
           title: '',

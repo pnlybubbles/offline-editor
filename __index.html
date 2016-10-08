@@ -8,23 +8,32 @@
   <div id="app">
     <div id="editor">
       <ul class="tab">
-        <li class="item run" @click="run"><span>RUN ▶</span></li>
+        <li class="item run" @click="run"><div class="label">RUN ▶</div></li>
         <li
           v-for="(index, item) in items"
-          class="item"
+          class="item cloak"
           :class="item.active ? 'active' : ''"
           :title="item.title"
           @click="focus(index)"
           @mouseover="onMouseover(index)"
           @mouseout="onMouseout(index)"
+          v-cloak
         >
-          <span>{{ item.title }}</span>
-          <tooltip class="tooltip">
-            <tooltip-item v-show="item.tooltipVisible" transition="tooltip" @click.stop="rename(index)">Rename</tooltip-item>
-            <tooltip-item v-show="item.tooltipVisible" transition="tooltip" @click.stop="del(index)">Delete</tooltip-item>
+          <div class="label">{{ item.title }}</div>
+          <tooltip class="tooltip" v-cloak>
+            <tooltip-item
+              v-show="item.tooltipVisible"
+              transition="tooltip"
+              @click.stop="rename(index)"
+            >Rename</tooltip-item>
+            <tooltip-item
+              v-show="item.tooltipVisible"
+              transition="tooltip"
+              @click.stop="del(index)"
+            >Delete</tooltip-item>
           </tooltip>
         </li>
-        <li class="item add" @click="add"><span>＋</span></li>
+        <li class="item add" @click="add"><div class="label">＋</div></li>
       </ul>
       <ul class="field">
         <li v-for="item in items" class="item" :class="item.active ? 'active' : ''">
@@ -42,15 +51,24 @@
     </div>
     <div id="overlay">
       <div class="shade" v-show="visible" transition="fade">
-        <div class="plate" v-show="visible" transition="popup">
-          <div class="label">{{ config.label }}</div>
+        <div class="plate" v-show="visible" transition="popup" v-cloak>
+          <div class="label" v-cloak>{{ config.label }}</div>
           <div v-show="config.type === 'prompt'">
             <input class="title" type="text" v-model="config.title" v-el:title @keydown.enter="hide(true)"></input>
             <div class="message filetype">File type: <span class='bold'>{{ filetype }}</span></div>
+            <div class="message error" v-show="error"><span class='bold'>{{ error }}</span></div>
           </div>
           <div class="horizontal">
-            <div class="button" :class="[config.buttons.left.class]" @click="hide(false)">{{ config.buttons.left.label }}</div>
-            <div class="button" :class="[config.buttons.right.class]" @click="hide(true)">{{ config.buttons.right.label }}</div>
+            <div
+              class="button"
+              :class="[config.buttons.left.class]"
+              @click="hide(false)"
+            >{{ config.buttons.left.label }}</div>
+            <div
+              class="button"
+              :class="[config.buttons.right.class, error ? 'disabled' : '']"
+              @click="!error && hide(true)"
+            >{{ config.buttons.right.label }}</div>
           </div>
         </div>
       </div>

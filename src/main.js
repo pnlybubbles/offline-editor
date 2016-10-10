@@ -77,6 +77,18 @@ module.exports = (importedItems) => {
         }
         clearTimeout(item.tooltipShowTimer);
       },
+      overlayErrorHandler(filename) {
+        let err = [];
+        if (this.items.map((item) => {
+          return item.title;
+        }).indexOf(filename) !== -1) {
+          err.push('Filename duplicated !');
+        }
+        if (!filename.match(/^[\w\-_\.]*$/)) {
+          err.push('Invalid characters !');
+        }
+        return err.length === 0 ? null : err.join('  ');
+      },
       add() {
         overlay.open({
           label: 'Add file',
@@ -104,15 +116,7 @@ module.exports = (importedItems) => {
             this.focus(this.items.length - 1);
           }
         });
-        overlay.errorHandler((filename) => {
-          if (this.items.map((item) => {
-            return item.title;
-          }).indexOf(filename) === -1) {
-            return null;
-          } else {
-            return 'Filename duplicated !';
-          }
-        });
+        overlay.errorHandler(this.overlayErrorHandler);
       },
       rename(index) {
         const item = this.items[index];
@@ -136,6 +140,7 @@ module.exports = (importedItems) => {
             item.title = ret.filename;
           }
         });
+        overlay.errorHandler(this.overlayErrorHandler);
       },
       del(index) {
         overlay.open({

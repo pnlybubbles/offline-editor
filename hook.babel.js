@@ -5,7 +5,7 @@ xhrMock.setup();
 xhrMock.mock((req, res) => {
   let item = null;
   window.__HOOK_OBJECTS.forEach((i) => {
-    if (i.title === req.url().replace(document.location.origin + '/', '').replace(/^\.\//, '')) {
+    if (i.title === req.url().replace(document.location.origin + document.location.pathname.replace(/\/[^\/]*?$/, '') + '/', '').replace(/^\.\//, '')) {
       item = i;
     }
   });

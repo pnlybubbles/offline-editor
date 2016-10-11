@@ -1,5 +1,6 @@
 const CodeMirror = require('codemirror');
 const Vue = require('vue');
+require('./glsl')(CodeMirror);
 
 const EditorComponent = Vue.extend({
   template: '<div></div>',
@@ -26,6 +27,12 @@ const EditorComponent = Vue.extend({
         matchBrackets: true,
         theme: 'base16',
         scrollbarStyle: null,
+        indentWithTabs: false,
+        styleActiveLine: true,
+        showCursorWhenSelecting: true,
+        viewportMargin: Infinity,
+        tabSize: 2,
+        indentUnit: 2,
       },
     };
   },

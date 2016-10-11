@@ -26,11 +26,11 @@ module.exports = (filename) => {
     break;
   case 'glsl':
     modeDisplay = 'GLSL';
-    mode = 'clike';
+    mode = 'glsl';
     break;
   case 'sort':
     modeDisplay = 'SORT';
-    mode = 'clike';
+    mode = 'glsl';
     break;
   }
   return {mode, modeDisplay, ext};

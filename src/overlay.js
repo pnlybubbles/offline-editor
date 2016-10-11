@@ -80,8 +80,10 @@ module.exports = () => {
         this.visible = true;
       },
       hide(res) {
-        this.visible = false;
-        this.$emit('close', res);
+        if (!(this.error && res)) {
+          this.visible = false;
+          this.$emit('close', res);
+        }
       },
     },
   });

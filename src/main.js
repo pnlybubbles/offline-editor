@@ -5,7 +5,7 @@ const Vue = require('vue');
 const Preview = require('./preview');
 const Overlay = require('./overlay');
 
-module.exports = (importedItems) => {
+module.exports = (importedItems, autoStart) => {
   importedItems = importedItems || [];
 
   importedItems.forEach((item, i) => {
@@ -16,12 +16,14 @@ module.exports = (importedItems) => {
   const preview = Preview();
   const overlay = Overlay();
 
-  new Vue({
+  return new Vue({
     el: '#editor',
     data: {
       items: importedItems,
     },
     ready() {
+      overlay.vm.show();
+      overlay.vm.config.type = 'no-plate';
       Promise.all(this.items.map((item) => {
         return new Promise((resolve, reject) => {
           if (item.contentUrl) {
@@ -44,6 +46,10 @@ module.exports = (importedItems) => {
         });
       })).then(() => {
         this.$broadcast('apply'); // EditorComponent has apply event to set content...
+        overlay.vm.hide();
+        if (autoStart) {
+          this.run();
+        }
       }).catch((e) => {
         console.error(e);
       });

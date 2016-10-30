@@ -51,7 +51,7 @@
     </div>
     <div id="overlay">
       <div class="shade" v-show="visible" transition="fade">
-        <div class="plate" v-show="visible" transition="popup" v-cloak>
+        <div class="plate" v-show="visible && config.type !== 'no-plate'" transition="popup" v-cloak>
           <div class="label" v-cloak>{{ config.label }}</div>
           <div v-show="config.type === 'prompt'">
             <input

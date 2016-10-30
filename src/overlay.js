@@ -45,11 +45,11 @@ module.exports = () => {
   const vm = new Vue({
     el: '#overlay',
     data: {
-      visible: false,
+      visible: true,
       config: {
         label: 'Label',
         title: '',
-        type: 'prompt',
+        type: 'no-plate',
         buttons: {
           left: {
             label: 'Cancel',

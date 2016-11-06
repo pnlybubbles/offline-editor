@@ -99,6 +99,7 @@ module.exports = (importedItems, autoStart) => {
         overlay.open({
           label: 'Add file',
           title: '',
+          subTitle: '',
           type: 'prompt',
           buttons: {
             left: {
@@ -124,11 +125,34 @@ module.exports = (importedItems, autoStart) => {
         });
         overlay.errorHandler(this.overlayErrorHandler);
       },
+      open() {
+        overlay.open({
+          label: 'Open in new tab',
+          title: '',
+          subTitle: 'Edited code will not be taken over.',
+          type: 'confirm',
+          buttons: {
+            left: {
+              label: 'Cancel',
+              class: 'sub',
+            },
+            right: {
+              label: 'OK',
+              class: 'main',
+            },
+          },
+        }).then((ret) => {
+          if (ret.result) {
+            window.open(document.location.href);
+          }
+        });
+      },
       rename(index) {
         const item = this.items[index];
         overlay.open({
           label: 'Rename file',
           title: item.title,
+          subTitle: '',
           type: 'prompt',
           buttons: {
             left: {
@@ -152,6 +176,7 @@ module.exports = (importedItems, autoStart) => {
         overlay.open({
           label: 'Delete file',
           title: '',
+          subTitle: '',
           type: 'confirm',
           buttons: {
             left: {

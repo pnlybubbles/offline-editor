@@ -49,6 +49,7 @@ module.exports = () => {
       config: {
         label: 'Label',
         title: '',
+        subTitle: '',
         type: 'no-plate',
         buttons: {
           left: {

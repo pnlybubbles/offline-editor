@@ -37,8 +37,6 @@ module.exports = (importedItems, autoStart) => {
                 reject(xhr.statusText);
               }
             });
-            xhr.addEventListener('timeout', reject);
-            xhr.timeout = 2000;
             xhr.send();
           } else {
             resolve();
